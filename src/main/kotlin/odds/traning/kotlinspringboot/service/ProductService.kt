@@ -11,15 +11,41 @@ class ProductService(
     private val productRepository: ProductRepository
 ) {
 
-    fun addProduct(product: ProductRequest): ProductResponse = TODO("Added new product and added tax to the price before save it to database")
+    fun addProduct(product: ProductRequest): ProductResponse {
+        val productEntity = ProductEntity(
+            id = 0,
+            name = product.name,
+            price = addTaxToPrice(product.price ?: 0.0),
+            description = product.description ?: "",
+            stock = product.stock,
+        )
+        return transformToProductResponse(productRepository.save(productEntity))
+    }
 
-    fun getProducts(): List<ProductResponse> = TODO("Used findAll() from repository and transform the entity to be readable response for frontend ")
+    fun getProducts(): List<ProductResponse> {
+        return productRepository.findAll().map { transformToProductResponse(it) }
+    }
 
-    fun updateProductById(productId: Int, request: ProductRequest): ProductResponse =
-        TODO("Check if the data is existing before update, if it is update save it to the database. Otherwise, throw error")
+    fun updateProductById(productId: Int, request: ProductRequest): ProductResponse {
+        val productEntity = ProductEntity(
+            id = productId,
+            name = request.name,
+            price = addTaxToPrice(request.price ?: 0.0),
+            description = request.description ?: "",
+            stock = request.stock,
+        )
+        return transformToProductResponse(productRepository.save(productEntity))
+    }
+
+    fun deleteProductById(productId: Int): String = productRepository.deleteById(productId).let { "Delete productId: $productId successfully" }
 
     private fun addTaxToPrice(price: Double) = price * 1.07
 
-    private fun transformToProductResponse(entity: ProductEntity): ProductResponse =
-        TODO("Transform response from database to be readable response for frontend")
+    private fun transformToProductResponse(entity: ProductEntity): ProductResponse = ProductResponse(
+        id = "${entity.id}",
+        name = entity.name,
+        price = "${entity.price?.toBigDecimal()}",
+        description = "${entity.description}",
+        stock = "${entity.stock}",
+    )
 }

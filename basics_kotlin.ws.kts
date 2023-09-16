@@ -150,8 +150,8 @@ fun coolerWhen() {
     val x = 10
     val y = 9
     when {
-        x == 10 -> println("x == $x")
         y == 9 -> println("y == $y")
+        x == 10 -> println("x == $x")
         else -> println("why you do this?")
     }
 }

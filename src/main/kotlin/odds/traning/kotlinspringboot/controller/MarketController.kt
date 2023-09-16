@@ -1,5 +1,6 @@
 package odds.traning.kotlinspringboot.controller
 
+import odds.traning.kotlinspringboot.entity.ProductEntity
 import odds.traning.kotlinspringboot.model.ProductRequest
 import odds.traning.kotlinspringboot.model.ProductResponse
 import odds.traning.kotlinspringboot.service.ProductService
@@ -10,23 +11,26 @@ class MarketController(
     private val productService: ProductService
 ) {
 
+    @GetMapping("/hello")
+    fun hello(): String = "Hello, Taliw!"
+
     @PostMapping("/products")
     fun addProduct(@RequestBody product: ProductRequest): ProductResponse {
-        TODO("Call service to add product")
+        return productService.addProduct(product)
     }
 
     @GetMapping("/products")
     fun getProducts(): List<ProductResponse> {
-        TODO("Call service to get product")
+        return productService.getProducts()
     }
 
     @PutMapping("/products/{productId}")
     fun updateProduct(@PathVariable productId: Int, @RequestBody product: ProductRequest): ProductResponse {
-        TODO("Call service to update product")
+        return productService.updateProductById(productId, product)
     }
 
     @DeleteMapping("/products/{productId}")
-    fun deleteProduct(): Unit = TODO("Bonus, try if you can ?:)")
+    fun deleteProduct(@PathVariable productId: Int): String = productService.deleteProductById(productId)
 }
 
 

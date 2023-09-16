@@ -8,6 +8,9 @@ import jakarta.persistence.Id
 data class ProductEntity(
     @Id
     @GeneratedValue
-    val id: Int
-    //TODO: Added fields that you want to save it into the database
+    val id: Int,
+    val name: String,
+    val price: Double?,
+    val description: String?,
+    val stock: Int,
 )
